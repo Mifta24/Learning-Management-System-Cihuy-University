@@ -28,7 +28,7 @@ class CourseAnswerResource extends Resource
                 Forms\Components\TextInput::make('answer')
                     ->required(),
                 Forms\Components\Select::make('course_question_id')
-                    ->label('Course Question')
+                    ->label('Question')
                     ->relationship('course_question', 'question') // Menggunakan relasi
                     ->required(),
                 Forms\Components\Toggle::make('is_correct')
@@ -42,7 +42,8 @@ class CourseAnswerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('answer')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('course_question_id')
+                Tables\Columns\TextColumn::make('course_question.question')
+                    ->label('Question')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_correct')

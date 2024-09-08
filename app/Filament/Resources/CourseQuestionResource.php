@@ -27,7 +27,7 @@ class CourseQuestionResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('question')
                     ->required(),
-                    Forms\Components\Select::make('course_id')
+                Forms\Components\Select::make('course_id')
                     ->label('Course')
                     ->relationship('course', 'name') // Menggunakan relasi
                     ->required(),
@@ -40,7 +40,8 @@ class CourseQuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('question')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('course_id')
+                Tables\Columns\TextColumn::make('course.name')
+                    ->label('Course')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

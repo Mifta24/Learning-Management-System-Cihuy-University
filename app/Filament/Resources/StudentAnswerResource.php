@@ -26,11 +26,13 @@ class StudentAnswerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('course_question_id')
-                    ->required()
-                    ->numeric(),
+                    ->label('Student')
+                    ->relationship('student', 'name') // Menggunakan relasi
+                    ->required(),
+                Forms\Components\Select::make('course_question_id')
+                    ->label('Question')
+                    ->relationship('course_question', 'question') // Menggunakan relasi
+                    ->required(),
                 Forms\Components\TextInput::make('answer')
                     ->required(),
             ]);
@@ -40,10 +42,11 @@ class StudentAnswerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('course_question_id')
+                Tables\Columns\TextColumn::make('course_question.question')
+                    ->label('Question')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('answer')

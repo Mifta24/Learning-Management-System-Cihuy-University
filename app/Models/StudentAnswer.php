@@ -15,7 +15,7 @@ class StudentAnswer extends Model
         'course_question_id',
     ];
 
-    public function user()
+    public function student()
     {
         return $this->belongsTo(User::class);
     }
