@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
@@ -15,6 +16,18 @@ class Course extends Model
         'category_id',
         'cover',
     ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($course) {
+            if (empty($course->slug)) {
+                $course->slug = Str::slug($course->name);
+            }
+        });
+    }
 
     public function category()
     {

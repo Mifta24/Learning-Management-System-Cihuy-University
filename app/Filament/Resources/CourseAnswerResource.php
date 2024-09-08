@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers;
-use App\Models\Course;
+use App\Filament\Resources\CourseAnswerResource\Pages;
+use App\Filament\Resources\CourseAnswerResource\RelationManagers;
+use App\Models\CourseAnswer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,25 +13,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CourseResource extends Resource
+class CourseAnswerResource extends Resource
 {
-    protected static ?string $model = Course::class;
+    protected static ?string $model = CourseAnswer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 2; // Mengatur urutan di navigasi
+    protected static ?int $navigationSort = 4; // Mengatur urutan di navigasi
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('answer')
                     ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->label('Category')
-                    ->relationship('category', 'name') // Menggunakan relasi
+                Forms\Components\Select::make('course_question_id')
+                    ->label('Course Question')
+                    ->relationship('course_question', 'question') // Menggunakan relasi
                     ->required(),
-                Forms\Components\FileUpload::make('cover')
+                Forms\Components\Toggle::make('is_correct')
                     ->required(),
             ]);
     }
@@ -40,16 +40,13 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('answer')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
+                Tables\Columns\TextColumn::make('course_question_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cover')
-                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_correct')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -82,9 +79,9 @@ class CourseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCourses::route('/'),
-            'create' => Pages\CreateCourse::route('/create'),
-            'edit' => Pages\EditCourse::route('/{record}/edit'),
+            'index' => Pages\ListCourseAnswers::route('/'),
+            'create' => Pages\CreateCourseAnswer::route('/create'),
+            'edit' => Pages\EditCourseAnswer::route('/{record}/edit'),
         ];
     }
 }
