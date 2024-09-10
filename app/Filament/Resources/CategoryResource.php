@@ -18,8 +18,14 @@ class CategoryResource extends Resource
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
+
     protected static ?int $navigationSort = 1; // Mengatur urutan di navigasi
+
+    public function __construct()
+    {
+        // Menambahkan middleware pada resource ini
+        $this->middleware('role:operator');
+    }
 
     public static function form(Form $form): Form
     {

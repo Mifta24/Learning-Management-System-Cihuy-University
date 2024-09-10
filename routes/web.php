@@ -2,11 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
+use App\Filament\Resources\CourseResource;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
 
 Route::get('/courses',[FrontController::class,'courses'])->name('courses');
 Route::get('/courses-details',[FrontController::class,'courseDetails'])->name('courses.show');

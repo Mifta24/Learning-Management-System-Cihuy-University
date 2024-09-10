@@ -43,15 +43,15 @@ class RolePermissionSedder extends Seeder
 
         // Roles (didefinisikan setelah permissions)
         $admin = Role::create(['name' => 'admin']);
-        $guru = Role::create(['name' => 'guru']);
-        $siswa = Role::create(['name' => 'siswa']);
+        $teacher = Role::create(['name' => 'teacher']);
+        $student = Role::create(['name' => 'student']);
         $operator = Role::create(['name' => 'operator']);
 
         // Assign all permissions to admin
         $admin->givePermissionTo(Permission::all());
 
-        // Assign specific permissions to guru
-        $guru->givePermissionTo([
+        // Assign specific permissions to teacher
+        $teacher->givePermissionTo([
             'create exam',
             'edit exam',
             'delete exam',
@@ -63,8 +63,8 @@ class RolePermissionSedder extends Seeder
             'assign exam',
         ]);
 
-        // Assign specific permissions to siswa
-        $siswa->givePermissionTo([
+        // Assign specific permissions to student
+        $student->givePermissionTo([
             'take exam',
             'view own results',
             'view exam schedule',

@@ -18,6 +18,13 @@ class ExamQuestionResource extends Resource
     protected static ?string $model = ExamQuestion::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 4;
+
+    public function __construct()
+    {
+        // Menambahkan middleware pada resource ini
+        $this->middleware('role:teacher|admin|operator');
+    }
 
     public static function form(Form $form): Form
     {
@@ -26,8 +33,9 @@ class ExamQuestionResource extends Resource
                 Forms\Components\TextInput::make('question')
                     ->required(),
                 Forms\Components\TextInput::make('exam_id')
-                    ->required()
-                    ->numeric(),
+                    ->label('Exam')
+                    ->relationship('exam', 'title')
+                    ->required(),
             ]);
     }
 
@@ -37,7 +45,7 @@ class ExamQuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('question')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('exam_id')
+                Tables\Columns\TextColumn::make('exam.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

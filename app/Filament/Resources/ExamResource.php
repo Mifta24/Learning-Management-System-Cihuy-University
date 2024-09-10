@@ -18,6 +18,13 @@ class ExamResource extends Resource
     protected static ?string $model = Exam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 3;
+
+    public function __construct()
+    {
+        // Menambahkan middleware pada resource ini
+        $this->middleware('role:teacher|admin|operator');
+    }
 
     public static function form(Form $form): Form
     {
@@ -27,9 +34,10 @@ class ExamResource extends Resource
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('course_id')
+                    ->label('Course')
+                    ->relationship('course', 'name')
+                    ->required(),
                 Forms\Components\DateTimePicker::make('start_time')
                     ->required(),
                 Forms\Components\DateTimePicker::make('end_time')
@@ -43,7 +51,7 @@ class ExamResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('course_id')
+                Tables\Columns\TextColumn::make('course.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')

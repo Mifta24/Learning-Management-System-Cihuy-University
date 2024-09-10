@@ -18,6 +18,13 @@ class StudentAnswerResource extends Resource
     protected static ?string $model = StudentAnswer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 6;
+
+    public function __construct()
+    {
+        // Menambahkan middleware pada resource ini
+        $this->middleware('role:teacher|admin|operator');
+    }
 
     public static function form(Form $form): Form
     {
@@ -43,13 +50,13 @@ class StudentAnswerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('exam_id')
+                Tables\Columns\TextColumn::make('exam.title')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('exam_question_id')
+                Tables\Columns\TextColumn::make('exam_question.question')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('answer')
@@ -85,12 +92,17 @@ class StudentAnswerResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+{
+    return false; // Menghilangkan tombol "Add"
+}
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListStudentAnswers::route('/'),
-            'create' => Pages\CreateStudentAnswer::route('/create'),
-            'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
+            // 'create' => Pages\CreateStudentAnswer::route('/create'),
+            // 'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
         ];
     }
 }

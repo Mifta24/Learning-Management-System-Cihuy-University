@@ -17,12 +17,13 @@ class StudentAnswer extends Model
         'is_correct',
     ];
 
-    public function student()
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function question()
+    public function exam_question()
     {
         return $this->belongsTo(ExamQuestion::class);
     }
