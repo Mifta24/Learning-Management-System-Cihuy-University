@@ -1,11 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/courses',[FrontController::class,'courses'])->name('courses');
+Route::get('/courses-details',[FrontController::class,'courseDetails'])->name('courses.show');
+Route::get('/events',[FrontController::class,'events'])->name('events');
+Route::get('/events',[FrontController::class,'events'])->name('events');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

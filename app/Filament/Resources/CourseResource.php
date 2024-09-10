@@ -19,19 +19,18 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 2; // Mengatur urutan di navigasi
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->label('Category')
-                    ->relationship('category', 'name') // Menggunakan relasi
+                Forms\Components\TextInput::make('slug')
                     ->required(),
-                Forms\Components\FileUpload::make('cover')
+                Forms\Components\TextInput::make('category_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('cover')
                     ->required(),
             ]);
     }
@@ -44,12 +43,10 @@ class CourseResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
+                Tables\Columns\TextColumn::make('category_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('cover')
-                    ->label('Cover')
+                Tables\Columns\TextColumn::make('cover')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

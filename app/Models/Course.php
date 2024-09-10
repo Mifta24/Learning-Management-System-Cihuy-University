@@ -34,9 +34,9 @@ class Course extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function questions()
+    public function exam()
     {
-        return $this->hasMany(CourseQuestion::class);
+        return $this->hasMany(Exam::class);
     }
 
     public function students()

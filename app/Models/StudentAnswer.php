@@ -10,9 +10,11 @@ class StudentAnswer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'answer',
         'user_id',
-        'course_question_id',
+        'exam_id',
+        'exam_question_id',
+        'answer',
+        'is_correct',
     ];
 
     public function student()
@@ -22,6 +24,6 @@ class StudentAnswer extends Model
 
     public function question()
     {
-        return $this->belongsTo(CourseQuestion::class);
+        return $this->belongsTo(ExamQuestion::class);
     }
 }

@@ -19,21 +19,22 @@ class StudentAnswerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 5; // Mengatur urutan di navigasi
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('exam_id')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('user_id')
-                    ->label('Student')
-                    ->relationship('student', 'name') // Menggunakan relasi
-                    ->required(),
-                Forms\Components\Select::make('course_question_id')
-                    ->label('Question')
-                    ->relationship('course_question', 'question') // Menggunakan relasi
-                    ->required(),
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('exam_question_id')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('answer')
+                    ->required(),
+                Forms\Components\Toggle::make('is_correct')
                     ->required(),
             ]);
     }
@@ -42,15 +43,19 @@ class StudentAnswerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('exam_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('course_question.question')
-                    ->label('Question')
+                Tables\Columns\TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('exam_question_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('answer')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_correct')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -80,18 +85,12 @@ class StudentAnswerResource extends Resource
         ];
     }
 
-    public static function canCreate(): bool
-    {
-        return false; // Menghilangkan tombol "Add"
-    }
-
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListStudentAnswers::route('/'),
-            // 'create' => Pages\CreateStudentAnswer::route('/create'),
-            // 'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
+            'create' => Pages\CreateStudentAnswer::route('/create'),
+            'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
         ];
     }
 }
