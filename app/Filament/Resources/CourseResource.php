@@ -48,7 +48,8 @@ class CourseResource extends Resource
                     ->label('Category')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cover')
+                Tables\Columns\ImageColumn::make('cover')
+                    ->label('Cover')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

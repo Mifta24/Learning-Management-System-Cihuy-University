@@ -15,7 +15,7 @@ class CourseAnswer extends Model
         'is_correct',
     ];
 
-    public function question()
+    public function course_question()
     {
         return $this->belongsTo(CourseQuestion::class);
     }

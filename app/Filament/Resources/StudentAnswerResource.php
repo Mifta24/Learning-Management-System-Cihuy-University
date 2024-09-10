@@ -80,12 +80,18 @@ class StudentAnswerResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+    {
+        return false; // Menghilangkan tombol "Add"
+    }
+
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListStudentAnswers::route('/'),
-            'create' => Pages\CreateStudentAnswer::route('/create'),
-            'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
+            // 'create' => Pages\CreateStudentAnswer::route('/create'),
+            // 'edit' => Pages\EditStudentAnswer::route('/{record}/edit'),
         ];
     }
 }
