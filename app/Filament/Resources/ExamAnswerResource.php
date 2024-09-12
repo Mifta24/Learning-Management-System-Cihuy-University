@@ -32,11 +32,10 @@ class ExamAnswerResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('answer')
                     ->required(),
-                Forms\Components\TextInput::make('exam_question_id')
+                Forms\Components\Select::make('exam_question_id')
                     ->label('Exam Question')
                     ->relationship('exam_question', 'question')
-                    ->required()
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\Toggle::make('is_correct')
                     ->required(),
             ]);

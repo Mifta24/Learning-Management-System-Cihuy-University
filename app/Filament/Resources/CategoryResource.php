@@ -33,8 +33,7 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
+               
             ]);
     }
 

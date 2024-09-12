@@ -7,15 +7,16 @@ use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 
 
 Route::get('/courses',[FrontController::class,'courses'])->name('courses');
-Route::get('/courses-details',[FrontController::class,'courseDetails'])->name('courses.show');
-Route::get('/events',[FrontController::class,'events'])->name('events');
-Route::get('/events',[FrontController::class,'events'])->name('events');
+Route::get('/courses-details/{course:slug}',[FrontController::class,'courseDetails'])->name('courses.show');
+Route::get('/about',[FrontController::class,'about'])->name('about');
+Route::get('/lecturers',[FrontController::class,'lecturers'])->name('lecturers');
+Route::get('/contact',[FrontController::class,'contact'])->name('contact');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

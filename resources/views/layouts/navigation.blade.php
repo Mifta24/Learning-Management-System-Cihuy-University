@@ -4,7 +4,7 @@
         <li><a href="{{ route('about') }}">About</a></li>
         <li><a href="{{ route('courses') }}">Courses</a></li>
         <li><a href="{{ route('lecturers') }}">Dosen</a></li>
-        <li><a href="{{ route('events') }}">Events</a></li>
+        
         <li><a href="pricing.html">Pricing</a></li>
         <li class="dropdown"><a href="#"><span>Profile</span> <i
                     class="bi bi-chevron-down toggle-dropdown"></i></a>

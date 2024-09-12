@@ -32,12 +32,19 @@ class CourseResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('cover')
+                // Forms\Components\Select::make('teacher_id')
+                //     ->relationship('lecturer', 'name', function (Builder $query) {
+                //         return $query->whereHas('roles', function (Builder $query) {
+                //             $query->where('name', 'teacher');
+                //         });
+                //     })
+                //     ->required(),
+
+                Forms\Components\FileUpload::make('cover')
+                    ->image()
                     ->required(),
             ]);
     }
@@ -53,7 +60,10 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cover')
+                Tables\Columns\TextColumn::make('lecturer.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('cover')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

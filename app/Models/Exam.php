@@ -13,8 +13,8 @@ class Exam extends Model
         'title',
         'description',
         'course_id',
-        'start_date',
-        'end_date',
+        'start_time',
+        'end_time',
     ];
 
 

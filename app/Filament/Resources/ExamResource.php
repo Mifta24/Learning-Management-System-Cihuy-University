@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ExamResource extends Resource
 {
@@ -36,8 +37,13 @@ class ExamResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('course_id')
                     ->label('Course')
-                    ->relationship('course', 'name')
+                    ->relationship('course', 'name', function (Builder $query) {
+                        return $query->whereHas('lecturer', function (Builder $query) {
+                            $query->where('teacher_id', Auth::user()->id);
+                        });
+                    })
                     ->required(),
+
                 Forms\Components\DateTimePicker::make('start_time')
                     ->required(),
                 Forms\Components\DateTimePicker::make('end_time')

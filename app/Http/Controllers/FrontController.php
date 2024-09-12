@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Http\Request;
 
@@ -14,16 +15,20 @@ class FrontController extends Controller
     }
     public function courses()
     {
-        return view('front.courses');
+        $courses=Course::with(['lecturer','category'])->orderByDesc('id')->get();
+        return view('front.courses',compact('courses'));
     }
 
-    public function courseDetails()
+    public function courseDetails(Course $course)
     {
-        return view('front.course-details');
+        $course->load(['lecturer','exams']);
+
+        return view('front.course-details',compact('course'));
     }
 
     public function exam()
     {
+
         return view('front.courses');
     }
     public function events()

@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <img src="assets/img/course-details.jpg" class="img-fluid" alt="">
-                    <h3>Et enim incidunt fuga tempora</h3>
+                    <h3>{{ $course->name }}</h3>
                     <p>
                         Qui et explicabo voluptatem et ab qui vero et voluptas. Sint voluptates temporibus quam autem.
                         Atque nostrum voluptatum laudantium a doloremque enim et ut dicta. Nostrum ducimus est iure
@@ -48,17 +48,17 @@
 
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Trainer</h5>
-                        <p><a href="#">Walter White</a></p>
+                        <p><a href="#">{{ $course->lecturer->name }}</a></p>
                     </div>
 
                     <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Course Fee</h5>
-                        <p>$165</p>
+                        <h5>Exams</h5>
+                        <p>{{ $course->exams()->count() }}</p>
                     </div>
 
                     <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Available Seats</h5>
-                        <p>30</p>
+                        <h5>Available Students</h5>
+                        <p>{{ $course->students()->count() }}</p>
                     </div>
 
                     <div class="course-info d-flex justify-content-between align-items-center">
@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <ul class="nav nav-tabs flex-column">
-                        @forelse ($exams as $exam)
+                        @forelse ($course->exams as $exam)
                             <li class="nav-item">
                                 <a class="nav-link active show" data-bs-toggle="tab"
                                     href="#{{ $exam->title }}">{{ $exam->title }}</a>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-lg-9 mt-4 mt-lg-0">
                     <div class="tab-content">
-                        @forelse ($exams as $exam)
+                        @forelse ($course->exams as $exam)
                             <div class="tab-pane active show" id="{{ $exam->title }}">
                                 <div class="row">
                                     <div class="col-lg-8 details order-2 order-lg-1">
