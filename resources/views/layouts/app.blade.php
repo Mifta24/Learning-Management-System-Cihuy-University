@@ -45,7 +45,7 @@
       @include('layouts.navigation')
 
 
-      <a class="btn-getstarted" href="courses.html">Get Started</a>
+      <a class="btn-getstarted" href="/dashboard">Get Started</a>
 
     </div>
   </header>
