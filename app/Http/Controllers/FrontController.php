@@ -13,6 +13,12 @@ class FrontController extends Controller
 
         return view('front.index');
     }
+
+    public function about() {
+
+        return view('front.about');
+    }
+
     public function courses()
     {
         $courses=Course::with(['lecturer','category'])->orderByDesc('id')->get();
