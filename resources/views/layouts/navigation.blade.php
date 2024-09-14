@@ -6,6 +6,7 @@
         <li><a href="{{ route('lecturers') }}">Dosen</a></li>
 
         @auth
+
             {{-- <li><a href="pricing.html">Pricing</a></li> --}}
             <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
@@ -19,6 +20,10 @@
                         <div class="mt-3">
                             <a href="{{ route('profile.edit') }}" class="btn btn-link text-decoration-none">
                                 {{ __('Profile') }}
+                            </a>
+
+                            <a href="{{ route('assignment.grades') }}" class="btn btn-link text-decoration-none">
+                                Assignment Grades
                             </a>
 
                             <!-- Authentication -->

@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <h2 class="mb-4">Nilai Ujian Saya</h2>
 
-        @if($scores->isEmpty())
+        @if($score==0)
             <div class="alert alert-warning">
                 Kamu belum memiliki nilai ujian.
             </div>

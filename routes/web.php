@@ -2,10 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
-use App\Filament\Resources\CourseResource;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Exam;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -16,9 +14,6 @@ Route::get('/lecturers', [FrontController::class, 'lecturers'])->name('lecturers
 Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
 Route::get('/courses', [FrontController::class, 'courses'])->name('courses');
 Route::get('/courses-details/{course:slug}', [FrontController::class, 'courseDetails'])->name('courses.show');
-
-Route::get('/assignment-grades', [FrontController::class, 'assignmentGrades'])->name('assignment-grades');
-Route::get('/my-scores', [ExamController::class, 'showScores'])->name('exam.scores');
 
 
 // Route::get('/dashboard', function () {
@@ -33,6 +28,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/exam/{exam}/start', [ExamController::class, 'show'])->name('exam.start');
     Route::post('/exam/{exam}/submit', [ExamController::class, 'submit'])->name('exam.submit');
+
+    Route::get('/assignment-grades', [FrontController::class, 'assignmentGrades'])->name('assignment.grades');
+    Route::get('/my-scores', [ExamController::class, 'showScores'])->name('exam.scores');
 });
 
 require __DIR__ . '/auth.php';

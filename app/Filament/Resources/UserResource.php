@@ -69,6 +69,14 @@ class UserResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        // Hanya tampilkan user yang memiliki role 'teacher'
+        return User::query()->whereHas('roles', function($query) {
+            $query->where('name', 'teacher');
+        });
+    }
+
     public static function getRelations(): array
     {
         return [
