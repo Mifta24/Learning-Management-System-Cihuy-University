@@ -45,7 +45,14 @@
       @include('layouts.navigation')
 
 
+      @guest
+      <a class="btn btn-outline-success rounded-pill ms-3" href="/register">Register</a>
+      <a class="btn-getstarted" href="/login">Login</a>
+      @endguest
+
+      @auth
       <a class="btn-getstarted" href="/dashboard">Get Started</a>
+      @endauth
 
     </div>
   </header>

@@ -43,4 +43,6 @@ class ExamController extends Controller
 
         return redirect()->route('exam.result', $exam->id)->with('success', 'Exam submitted successfully.');
     }
+
+  
 }
