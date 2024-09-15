@@ -81,6 +81,9 @@ class ExamQuestionResource extends Resource
                 });
             });
         }
+
+        // Jika bukan teacher, kembalikan query default (misalnya, semua data)
+        return ExamQuestion::query();
     }
 
     public static function getRelations(): array
