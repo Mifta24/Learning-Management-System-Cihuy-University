@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ExamAnswerResource\Pages;
-use App\Filament\Resources\ExamAnswerResource\RelationManagers;
-use App\Models\ExamAnswer;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\ExamAnswer;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ExamAnswerResource\Pages;
+use App\Filament\Resources\ExamAnswerResource\RelationManagers;
 
 class ExamAnswerResource extends Resource
 {
@@ -32,11 +33,10 @@ class ExamAnswerResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('answer')
                     ->required(),
-                Forms\Components\TextInput::make('exam_question_id')
+                Forms\Components\Select::make('exam_question_id')
                     ->label('Exam Question')
                     ->relationship('exam_question', 'question')
-                    ->required()
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\Toggle::make('is_correct')
                     ->required(),
             ]);
@@ -73,6 +73,21 @@ class ExamAnswerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        // Hanya tampilkan user yang memiliki role 'teacher'
+        if (Auth::user()->hasRole('teacher')) {
+            return ExamAnswer::query()->whereHas('exam_question', function ($query) {
+                $query->whereHas('exam', function ($query) {
+                    $query->whereHas('course', function ($query) {
+                        $query->where('teacher_id', Auth::user()->id);
+                    });
+                });
+            });
+        }
     }
 
     public static function getRelations(): array

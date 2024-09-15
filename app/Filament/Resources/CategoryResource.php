@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Category;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CategoryResource\RelationManagers;
 
 class CategoryResource extends Resource
 {
@@ -33,8 +34,7 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
+
             ]);
     }
 
@@ -73,6 +73,31 @@ class CategoryResource extends Resource
         return [
             //
         ];
+    }
+
+
+    public static function canViewAny(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa melihat resource
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa mengedit kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canDelete($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa menghapus kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
     }
 
     public static function getPages(): array

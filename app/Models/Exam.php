@@ -13,8 +13,8 @@ class Exam extends Model
         'title',
         'description',
         'course_id',
-        'start_date',
-        'end_date',
+        'start_time',
+        'end_time',
     ];
 
 
@@ -23,7 +23,7 @@ class Exam extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function question()
+    public function questions()
     {
         return $this->hasMany(ExamQuestion::class);
     }

@@ -27,4 +27,11 @@ class StudentAnswer extends Model
     {
         return $this->belongsTo(ExamQuestion::class);
     }
+
+    public function isCorrect()
+    {
+        // Mengecek apakah jawaban siswa sesuai dengan jawaban yang benar di ExamAnswer
+        return $this->answer == $this->exam_question->correctAnswer->id; // pastikan ada correct_answer_id di ExamAnswer
+    }
+
 }

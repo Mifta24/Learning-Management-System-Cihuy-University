@@ -5,35 +5,50 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Teacher;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\TeacherResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\RelationManagers;
 
-class UserResource extends Resource
+class TeacherResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?int $navigationSort = 100;
+
+    protected static ?string $navigationLabel = 'Teachers';
+
+
+    // Ganti judul di halaman index
+    public static function getPluralModelLabel(): string
+    {
+        return 'Teachers';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Teacher';
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->label('Teacher Name'),
                 Forms\Components\TextInput::make('email')
+                    ->required()
                     ->email()
-                    ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required(),
+                    ->label('Teacher Email'),
+
             ]);
     }
 
@@ -42,39 +57,48 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->label('Teacher Name'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Teacher Email'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make('remove_teacher') // Override delete action
+                    ->action(function ($record) {
+                        // Ubah role menjadi 'student' daripada menghapus user
+                        $record->syncRoles(['student']);
+                    })
+                    ->label('Remove Teacher') // Ubah label agar lebih jelas
+                    ->requiresConfirmation() // Konfirmasi sebelum aksi
+                    ->color('danger'), // Warna tombol
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
+
+
+    // // Gunakan hook untuk mengisi password otomatis sebelum data disimpan
+    // public static function beforeCreate(array $data): array
+    // {
+    //     $data['password'] = Hash::make('12345678'); // Isi password otomatis
+    //     return $data;
+    // }
+
+
+    // public static function beforeSave(array $data): array
+    // {
+    //     // Jika ada perubahan data selain password, lakukan hal yang sama
+    //     $data['password'] = Hash::make('12345678');
+    //     return $data;
+    // }
 
     public static function getEloquentQuery(): Builder
     {
         // Hanya tampilkan user yang memiliki role 'teacher'
-        return User::query()->whereHas('roles', function($query) {
-            $query->where('name', 'student');
+        return User::query()->whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
         });
     }
 
@@ -112,9 +136,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            // 'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListTeachers::route('/'),
+            'create' => Pages\CreateTeacher::route('/create'),
+            'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
     }
 }

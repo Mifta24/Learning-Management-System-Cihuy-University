@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers;
-use App\Models\Course;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Course;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CourseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CourseResource\RelationManagers;
 
 class CourseResource extends Resource
 {
@@ -32,12 +33,19 @@ class CourseResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('cover')
+                // Forms\Components\Select::make('teacher_id')
+                //     ->relationship('lecturer', 'name', function (Builder $query) {
+                //         return $query->whereHas('roles', function (Builder $query) {
+                //             $query->where('name', 'teacher');
+                //         });
+                //     })
+                //     ->required(),
+
+                Forms\Components\FileUpload::make('cover')
+                    ->image()
                     ->required(),
             ]);
     }
@@ -53,7 +61,10 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cover')
+                Tables\Columns\TextColumn::make('lecturer.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('cover')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -76,6 +87,17 @@ class CourseResource extends Resource
                 ]),
             ]);
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        // Hanya teacher
+        if (Auth::user()->hasRole('teacher')) {
+            return Course::query()->whereHas('lecturer', function ($query) {
+                $query->where('id', Auth::user()->id);
+            });
+        }
+    }
+
 
     public static function getRelations(): array
     {

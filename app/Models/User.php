@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -56,5 +57,14 @@ class User extends Authenticatable
         return $this->hasMany(StudentAnswer::class);
     }
 
+
+    protected static function booted()
+{
+    static::saving(function ($user) {
+        if (!$user->password) {
+            $user->password = Hash::make('12345678');
+        }
+    });
+}
 
 }
