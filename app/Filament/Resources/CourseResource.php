@@ -90,10 +90,12 @@ class CourseResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // Hanya tampilkan user yang memiliki role 'teacher'
-        return Course::query()->whereHas('lecturer', function ($query) {
-            $query->where('id', Auth::user()->id);
-        });
+        // Hanya teacher
+        if (Auth::user()->hasRole('teacher')) {
+            return Course::query()->whereHas('lecturer', function ($query) {
+                $query->where('id', Auth::user()->id);
+            });
+        }
     }
 
 

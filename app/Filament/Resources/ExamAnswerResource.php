@@ -79,13 +79,15 @@ class ExamAnswerResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         // Hanya tampilkan user yang memiliki role 'teacher'
-        return ExamAnswer::query()->whereHas('exam_question', function ($query) {
-            $query->whereHas('exam', function ($query) {
-                $query->whereHas('course', function ($query) {
-                    $query->where('teacher_id', Auth::user()->id);
+        if (Auth::user()->hasRole('teacher')) {
+            return ExamAnswer::query()->whereHas('exam_question', function ($query) {
+                $query->whereHas('exam', function ($query) {
+                    $query->whereHas('course', function ($query) {
+                        $query->where('teacher_id', Auth::user()->id);
+                    });
                 });
             });
-        });
+        }
     }
 
     public static function getRelations(): array
