@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UserResource\RelationManagers;
 
 class UserResource extends Resource
 {
@@ -73,7 +74,7 @@ class UserResource extends Resource
     {
         // Hanya tampilkan user yang memiliki role 'teacher'
         return User::query()->whereHas('roles', function($query) {
-            $query->where('name', 'teacher');
+            $query->where('name', 'student');
         });
     }
 
@@ -82,6 +83,30 @@ class UserResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa melihat resource
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa mengedit kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canDelete($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa menghapus kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
     }
 
     public static function getPages(): array

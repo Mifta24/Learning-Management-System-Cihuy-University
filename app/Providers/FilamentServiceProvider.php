@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,15 +21,12 @@ class FilamentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::middleware('role:admin|operator')
-            ->group(function () {
-                Route::prefix('admin')->group(function () {
-                    // Daftarkan resource yang membutuhkan middleware
-                    Route::resource('categories', \App\Filament\Resources\CategoryResource::class);
-                    Route::resource('teachers', \App\Filament\Resources\TeacherResource::class);
-                    Route::resource('users', \App\Filament\Resources\UserResource::class);
-                    Route::resource('users', \App\Filament\Resources\UserResource::class);
-                });
-            });
+        Filament::serving(function () {
+            if (!auth()->user() || !auth()->user()->hasAnyRole(['admin', 'operator', 'teacher'])) {
+                abort(403); // Akses ditolak jika tidak memiliki role yang sesuai
+            }
+
+           
+        });
     }
 }

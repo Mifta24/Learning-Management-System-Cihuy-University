@@ -88,6 +88,14 @@ class ExamResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        // Hanya tampilkan user yang memiliki role 'teacher'
+        return Exam::query()->whereHas('course', function ($query) {
+            $query->where('teacher_id', Auth::user()->id);
+        });
+    }
+
     public static function getRelations(): array
     {
         return [

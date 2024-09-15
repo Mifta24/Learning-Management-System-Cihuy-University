@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseStudentResource\Pages;
-use App\Filament\Resources\CourseStudentResource\RelationManagers;
-use App\Models\CourseStudent;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\CourseStudent;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CourseStudentResource\Pages;
+use App\Filament\Resources\CourseStudentResource\RelationManagers;
 
 class CourseStudentResource extends Resource
 {
@@ -84,6 +85,31 @@ class CourseStudentResource extends Resource
         return [
             //
         ];
+    }
+
+
+    public static function canViewAny(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa melihat resource
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa mengedit kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
+    public static function canDelete($record): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa menghapus kategori
+        return Auth::user()->hasAnyRole(['operator','admin']);
     }
 
     public static function getPages(): array

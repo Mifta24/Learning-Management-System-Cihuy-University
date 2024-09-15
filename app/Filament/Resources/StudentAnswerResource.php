@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StudentAnswerResource\Pages;
-use App\Filament\Resources\StudentAnswerResource\RelationManagers;
-use App\Models\StudentAnswer;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\StudentAnswer;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\StudentAnswerResource\Pages;
+use App\Filament\Resources\StudentAnswerResource\RelationManagers;
 
 class StudentAnswerResource extends Resource
 {
@@ -93,9 +94,17 @@ class StudentAnswerResource extends Resource
     }
 
     public static function canCreate(): bool
-{
-    return false; // Menghilangkan tombol "Add"
-}
+    {
+        return false; // Menghilangkan tombol "Add"
+    }
+
+
+    public static function canViewAny(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa melihat resource
+        return Auth::user()->hasAnyRole(['operator','admin']);
+    }
+
 
     public static function getPages(): array
     {

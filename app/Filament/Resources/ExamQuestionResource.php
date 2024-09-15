@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ExamQuestionResource\Pages;
-use App\Filament\Resources\ExamQuestionResource\RelationManagers;
-use App\Models\ExamQuestion;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ExamQuestion;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ExamQuestionResource\Pages;
+use App\Filament\Resources\ExamQuestionResource\RelationManagers;
 
 class ExamQuestionResource extends Resource
 {
@@ -68,6 +69,16 @@ class ExamQuestionResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        // Hanya tampilkan user yang memiliki role 'teacher'
+        return ExamQuestion::query()->whereHas('exam', function ($query) {
+            $query->whereHas('course', function ($query) {
+                $query->where('teacher_id', Auth::user()->id);
+            });
+        });
     }
 
     public static function getRelations(): array
