@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\ExamResult;
 use App\Models\StudentAnswer;
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Facades\Auth;
@@ -73,24 +74,7 @@ class FrontController extends Controller
     {
         $user = Auth::user();
 
-        // Ambil semua jawaban siswa untuk user yang sedang login
-        $studentAnswers = StudentAnswer::where('user_id', $user->id)->get();
-
-        // Hitung total pertanyaan dan jumlah jawaban yang benar
-        $totalQuestions = $studentAnswers->count();
-        $correctAnswers = $studentAnswers->filter(function ($answer) {
-            // Panggil method isCorrect untuk memeriksa apakah jawaban benar
-            return $answer->isCorrect();
-        })->count();
-
-        // Hitung skor berdasarkan jawaban yang benar
-        if ($totalQuestions > 0) {
-            $score = ($correctAnswers / $totalQuestions) * 100;
-        } else {
-            $score = 0;
-        }
-
-        return view('profile.grades', compact('studentAnswers','score', 'totalQuestions', 'correctAnswers'));
+        $examResults=ExamResult::where('user_id', $user->id)->get();
+        return view('profile.grades', compact( 'examResults'));
     }
-
 }

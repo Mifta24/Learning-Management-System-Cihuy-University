@@ -57,6 +57,10 @@ class User extends Authenticatable
         return $this->hasMany(StudentAnswer::class);
     }
 
+    public function results()
+    {
+        return $this->hasMany(ExamResult::class);
+    }
 
     protected static function booted()
 {

@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/exam/{exam}/start', [ExamController::class, 'show'])->name('exam.start');
     Route::post('/exam/{exam}/submit', [ExamController::class, 'submit'])->name('exam.submit');
 
+    Route::get('/exam/{exam}/result', [ExamController::class, 'result'])->name('exam.result');
+
     Route::get('/assignment-grades', [FrontController::class, 'assignmentGrades'])->name('assignment.grades');
     Route::get('/my-scores', [ExamController::class, 'showScores'])->name('exam.scores');
 });

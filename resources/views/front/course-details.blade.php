@@ -102,10 +102,16 @@
                                 <div class="row">
                                     <div class="col-lg-8 details order-2 order-lg-1">
                                         <h3>{{ $exam->title }}</h3>
-                                        <p class="fst-italic">Start Time: {{ $exam->start_time }} | End Time: {{ $exam->end_time }}</p>
+                                        <p class="fst-italic">Start Time: {{ $exam->start_time }} | End Time:
+                                            {{ $exam->end_time }}</p>
                                         <p>{{ $exam->description }}</p>
 
-                                        <a href="{{ route('exam.start', $exam->id) }}" class="btn btn-primary">Start Exam</a>
+                                        @if (!Auth::user()->results && Auth::user()->hasRole('student'))
+                                            @if ($exam->start_time < now() && $exam->end_time > now())
+                                                <a href="{{ route('exam.start', $exam->id) }}"
+                                                    class="btn btn-primary">Start Exam</a>
+                                            @endif
+                                        @endif
                                     </div>
                                     <div class="col-lg-4 text-center order-1 order-lg-2">
                                         <img src="assets/img/tabs/tab-1.png" alt="" class="img-fluid">

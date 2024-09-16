@@ -35,7 +35,14 @@ class ExamAnswerResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('exam_question_id')
                     ->label('Exam Question')
-                    ->relationship('exam_question', 'question')
+                    ->relationship('exam_question', 'question', function (Builder $query) {
+                        return $query->whereHas('exam', function (Builder $query) {
+                            $query->whereHas('course', function (Builder $query) {
+
+                                $query->where('teacher_id', Auth::user()->id);
+                            });
+                        });
+                    })
                     ->required(),
                 Forms\Components\Toggle::make('is_correct')
                     ->required(),

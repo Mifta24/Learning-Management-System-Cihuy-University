@@ -23,9 +23,8 @@ class FilamentServiceProvider extends ServiceProvider
     {
         Filament::serving(function () {
             if (!auth()->user() || !auth()->user()->hasAnyRole(['admin', 'operator', 'teacher'])) {
-                return redirect('dashboard'); // Akses ditolak jika tidak memiliki role yang sesuai
+                abort(403, 'Unauthorized'); // Akses ditolak jika tidak memiliki role yang sesuai
             }
-
 
         });
     }

@@ -34,8 +34,12 @@ class ExamQuestionResource extends Resource
                 Forms\Components\TextInput::make('question')
                     ->required(),
                 Forms\Components\Select::make('exam_id')
-                    ->label('Exam')
-                    ->relationship('exam', 'title')
+                    ->label('Exam') 
+                    ->relationship('exam', 'title', function (Builder $query) {
+                        return $query->whereHas('course', function (Builder $query) {
+                            $query->where('teacher_id', Auth::user()->id);
+                        });
+                    })
                     ->required(),
             ]);
     }

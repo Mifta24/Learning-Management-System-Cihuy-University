@@ -96,7 +96,7 @@
                         @foreach ($question->answers as $option)
                             <div class="col-6 col-md-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="answers[{{ $question->id }}]" id="option-{{ $option->id }}" value="{{ $option->id }}">
+                                    <input class="form-check-input" type="radio" name="answers[{{ $question->id }}]" id="option-{{ $option->id }}" value="{{ $option->answer }}">
                                     <label class="form-check-label" for="option-{{ $option->id }}">
                                         {{ $option->answer }}
                                     </label>
