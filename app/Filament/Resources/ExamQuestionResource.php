@@ -34,8 +34,12 @@ class ExamQuestionResource extends Resource
                 Forms\Components\TextInput::make('question')
                     ->required(),
                 Forms\Components\Select::make('exam_id')
-                    ->label('Exam')
-                    ->relationship('exam', 'title')
+                    ->label('Exam') 
+                    ->relationship('exam', 'title', function (Builder $query) {
+                        return $query->whereHas('course', function (Builder $query) {
+                            $query->where('teacher_id', Auth::user()->id);
+                        });
+                    })
                     ->required(),
             ]);
     }
@@ -81,6 +85,9 @@ class ExamQuestionResource extends Resource
                 });
             });
         }
+
+        // Jika bukan teacher, kembalikan query default (misalnya, semua data)
+        return ExamQuestion::query();
     }
 
     public static function getRelations(): array

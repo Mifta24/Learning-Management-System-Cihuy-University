@@ -35,7 +35,14 @@ class ExamAnswerResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('exam_question_id')
                     ->label('Exam Question')
-                    ->relationship('exam_question', 'question')
+                    ->relationship('exam_question', 'question', function (Builder $query) {
+                        return $query->whereHas('exam', function (Builder $query) {
+                            $query->whereHas('course', function (Builder $query) {
+
+                                $query->where('teacher_id', Auth::user()->id);
+                            });
+                        });
+                    })
                     ->required(),
                 Forms\Components\Toggle::make('is_correct')
                     ->required(),
@@ -78,8 +85,8 @@ class ExamAnswerResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // Hanya tampilkan user yang memiliki role 'teacher'
-        if (Auth::user()->hasRole('teacher')) {
+        // Cek apakah user sudah terautentikasi dan memiliki role 'teacher'
+        if (Auth::check() && Auth::user()->hasRole('teacher')) {
             return ExamAnswer::query()->whereHas('exam_question', function ($query) {
                 $query->whereHas('exam', function ($query) {
                     $query->whereHas('course', function ($query) {
@@ -88,6 +95,9 @@ class ExamAnswerResource extends Resource
                 });
             });
         }
+
+        // Jika bukan teacher, kembalikan query default (misalnya, semua data)
+        return ExamAnswer::query();
     }
 
     public static function getRelations(): array

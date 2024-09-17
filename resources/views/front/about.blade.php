@@ -8,9 +8,9 @@
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
                         <h1>About Us<br></h1>
-                        <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint
-                            voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores.
-                            Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+                        <p class="mb-0">
+                            Describe our university
+                        </p>
                     </div>
                 </div>
             </div>
@@ -37,21 +37,25 @@
                 </div>
 
                 <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Voluptatem dignissimos provident quasi corporis</h3>
+                    <h3>Cihuy University</h3>
                     <p class="fst-italic">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore
-                        magna aliqua.
+                        Welcome to Cihuy University, your trusted partner in the world of online education. Our platform
+                        is designed to provide a dynamic and interactive learning experience, tailored for both students
+                        and educators. At Cihuy University, we believe in the power of education to unlock potential and
+                        transform lives
                     </p>
                     <ul>
-                        <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Duis aute irure dolor in reprehenderit in voluptate
-                                velit.</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda
-                                mastiro dolore eu fugiat nulla pariatur.</span></li>
+                        <li><i class="bi bi-check-circle"></i> <span>User-friendly features.</span></li>
+                        <li><i class="bi bi-check-circle"></i> <span> Seamless access.</span></li>
+
                     </ul>
+                    <p class="fst-italic">
+                        we are committed to fostering an engaging and inclusive learning environment. Whether you're
+                        advancing your career, exploring new skills, or teaching the next generation, Cihuy University
+                        is here to support your journey every step of the way.
+
+                        Join us in embracing the future of learning!
+                    </p>
                 </div>
 
             </div>

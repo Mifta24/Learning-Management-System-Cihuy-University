@@ -2,7 +2,7 @@
     <ul>
         <li><a href="{{ route('dashboard') }}" class="active">Home<br></a></li>
         <li><a href="{{ route('about') }}">About</a></li>
-        <li><a href="{{ route('courses') }}">Courses</a></li>
+
         <li><a href="{{ route('lecturers') }}">Dosen</a></li>
 
         @auth
@@ -22,8 +22,13 @@
                                 {{ __('Profile') }}
                             </a>
 
+                            <a href="{{ route('courses') }}">
+                                My Courses
+                            </a>
+
+
                             <a href="{{ route('assignment.grades') }}" class="btn btn-link text-decoration-none">
-                                Assignment Grades
+                                Exam Grades
                             </a>
 
                             <!-- Authentication -->

@@ -97,6 +97,9 @@ class ExamResource extends Resource
                 $query->where('teacher_id', Auth::user()->id);
             });
         }
+
+        // Jika bukan teacher, kembalikan query default (misalnya, semua data)
+        return Exam::query();
     }
 
     public static function getRelations(): array

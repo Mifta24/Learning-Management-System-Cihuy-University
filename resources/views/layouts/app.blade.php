@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - CBT</title>
+  <title>LMS - Cihuy University</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -39,7 +39,7 @@
       <a href="index.html" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="{{{asset('assets')}}}/img/logo.png" alt=""> -->
-        <h1 class="sitename">Mentor</h1>
+        <h1 class="sitename">.=Cihuy University</h1>
       </a>
 
       @include('layouts.navigation')
@@ -68,13 +68,13 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Mentor</span>
+            <span class="sitename">Cihuy University</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
+            <p>A108 Contoy Street</p>
+            <p> Ihio, IH 43523</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+62 5589 55488</span></p>
+            <p><strong>Email:</strong> <span>cihuyuniversity@cihuy.edu.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -98,11 +98,11 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Our Services</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li><a href="#">Courses Management</a></li>
+            <li><a href="#">Online Assessments</a></li>
+            <li><a href="#">Real-time Progress Tracking</a></li>
+            <li><a href="#">Personalized Learning</a></li>
+            <li><a href="#">Collaborative Learning Tools</a></li>
           </ul>
         </div>
 
@@ -121,13 +121,9 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Mentor</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Cihuy University</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        Designed by <a href="https://bootstrapmade.com/">Miftah</a>
       </div>
     </div>
 

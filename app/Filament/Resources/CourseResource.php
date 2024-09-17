@@ -96,6 +96,9 @@ class CourseResource extends Resource
                 $query->where('id', Auth::user()->id);
             });
         }
+
+        // Jika bukan teacher, kembalikan query default (misalnya, semua data)
+        return Course::query();
     }
 
 
