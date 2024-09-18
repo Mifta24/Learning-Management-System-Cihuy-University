@@ -22,6 +22,8 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 1; // Mengatur urutan di navigasi
 
+    protected static ?string $navigationGroup = 'Learning Management';
+
     public function __construct()
     {
         // Menambahkan middleware pada resource ini

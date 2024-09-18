@@ -19,8 +19,11 @@ class ExamAnswerResource extends Resource
     protected static ?string $model = ExamAnswer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 5;
 
+    protected static ?string $navigationGroup = 'Learning Management';
+    
     public function __construct()
     {
         // Menambahkan middleware pada resource ini
