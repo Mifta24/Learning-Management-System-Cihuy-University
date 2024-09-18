@@ -19,8 +19,11 @@ class ExamQuestionResource extends Resource
     protected static ?string $model = ExamQuestion::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 4;
 
+    protected static ?string $navigationGroup = 'Learning Management';
+    
     public function __construct()
     {
         // Menambahkan middleware pada resource ini
@@ -34,7 +37,7 @@ class ExamQuestionResource extends Resource
                 Forms\Components\TextInput::make('question')
                     ->required(),
                 Forms\Components\Select::make('exam_id')
-                    ->label('Exam') 
+                    ->label('Exam')
                     ->relationship('exam', 'title', function (Builder $query) {
                         return $query->whereHas('course', function (Builder $query) {
                             $query->where('teacher_id', Auth::user()->id);

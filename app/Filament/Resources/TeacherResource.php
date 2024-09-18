@@ -25,6 +25,9 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationLabel = 'Teachers';
 
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = 'User Management';
 
     // Ganti judul di halaman index
     public static function getPluralModelLabel(): string
