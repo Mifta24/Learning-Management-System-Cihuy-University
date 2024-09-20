@@ -19,6 +19,15 @@ class ExamController extends Controller
 
     public function show(Exam $exam)
     {
+        $examResult = Auth::user()
+        ->results()
+        ->where('exam_id', $exam->id)
+        ->first();
+
+        if ($examResult) {
+            return redirect()->route('exam.result', $exam->id)->with('success', 'You have already taken this exam.');
+        }
+
         $exam->load('questions');
         $questions = $exam->questions()->get();
 
@@ -27,6 +36,15 @@ class ExamController extends Controller
 
     public function submit(Request $request, Exam $exam)
     {
+
+        $examResult = Auth::user()
+        ->results()
+        ->where('exam_id', $exam->id)
+        ->first();
+
+        if ($examResult) {
+            return redirect()->route('exam.result', $exam->id)->with('success', 'You have already taken this exam.');
+        }
 
         $request->validate([
             'answers' => 'required|array',
@@ -74,6 +92,16 @@ class ExamController extends Controller
 
     public function result(Exam $exam)
     {
+
+        $examResult = Auth::user()
+        ->results()
+        ->where('exam_id', $exam->id)
+        ->first();
+
+        if (!$examResult) {
+            return redirect()->route('courses.show', $exam->courses->slug)->with('success', 'You have already taken this exam.');
+        }
+
         $result = ExamResult::where('user_id', Auth::user()->id)
                         ->where('exam_id', $exam->id)
                         ->with(['user.answers' => function($query) use ($exam) {

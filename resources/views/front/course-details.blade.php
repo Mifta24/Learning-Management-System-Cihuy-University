@@ -128,7 +128,7 @@
                                                         Available</button>
                                                 @endif
                                             @else
-                                                <p>You have already completed this exam.</p>
+                                                <p class="bg-info">You have already completed this exam.</p>
                                             @endif
                                         @endif
 
