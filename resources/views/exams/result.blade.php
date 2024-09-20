@@ -15,7 +15,7 @@
                     @foreach ($result->user->answers as $index => $answer)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             {{-- <span>Question {{ $index + 1 }}: {{ $answer->examQuestion->question }}</span> --}}
-                            <span class="badge bg-info text-dark">{{ $answer->answer }}</span>
+                        <span class="badge bg-info text-dark">{{'No '. $index.' . '.$answer->answer }}</span>
                         </li>
                     @endforeach
                 </ul>

@@ -56,7 +56,8 @@ class ExamController extends Controller
             }
 
             // Simpan nilai siswa
-            $result = $studentAnswers->where('is_correct', true)->count();
+            $result = $studentAnswers->where('is_correct', true)->where('user_id', Auth::user()->id)
+            ->where('exam_id', $studentAnswers->exam_id)->count();
             $result = $result * 100 / ($exam->questions->count());
 
             // Simpan hasil ujian
@@ -73,7 +74,12 @@ class ExamController extends Controller
 
     public function result(Exam $exam)
     {
-        $result = ExamResult::where('user_id', Auth::user()->id)->where('exam_id', $exam->id)->first();
+        $result = ExamResult::where('user_id', Auth::user()->id)
+                        ->where('exam_id', $exam->id)
+                        ->with(['user.answers' => function($query) use ($exam) {
+                            $query->where('exam_id', $exam->id);
+                        }])
+                        ->first();
 
         return view('exams.result', compact('result'));
     }

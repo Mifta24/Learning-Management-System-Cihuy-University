@@ -106,12 +106,32 @@
                                             {{ $exam->end_time }}</p>
                                         <p>{{ $exam->description }}</p>
 
-                                        @if (!Auth::user()->results && Auth::user()->hasRole('student'))
-                                            @if ($exam->start_time < now() && $exam->end_time > now())
-                                                <a href="{{ route('exam.start', $exam->id) }}"
-                                                    class="btn btn-primary">Start Exam</a>
+                                        @if (Auth::user()->hasRole('student'))
+                                            @php
+                                                // Cek apakah student sudah memiliki hasil ujian dari exam tersebut
+                                                $examResult = Auth::user()
+                                                    ->results()
+                                                    ->where('exam_id', $exam->id)
+                                                    ->first();
+                                                // Cek waktu sekarang
+                                                $now = now();
+                                            @endphp
+
+                                            {{-- Jika student belum memiliki hasil ujian --}}
+                                            @if (!$examResult)
+                                                {{-- Cek apakah waktu sekarang lebih besar dari waktu mulai dan kurang dari waktu berakhir --}}
+                                                @if ($exam->start_time <= $now && $exam->end_time >= $now)
+                                                    <a href="{{ route('exam.start', $exam->id) }}"
+                                                        class="btn btn-primary">Start Exam</a>
+                                                @else
+                                                    <button class="btn btn-secondary" disabled>Exam Not
+                                                        Available</button>
+                                                @endif
+                                            @else
+                                                <p>You have already completed this exam.</p>
                                             @endif
                                         @endif
+
                                     </div>
                                     <div class="col-lg-4 text-center order-1 order-lg-2">
                                         <img src="assets/img/tabs/tab-1.png" alt="" class="img-fluid">
