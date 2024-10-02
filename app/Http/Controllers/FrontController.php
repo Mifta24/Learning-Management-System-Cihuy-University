@@ -9,6 +9,7 @@ use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use App\Models\StudentAnswer;
 use Doctrine\DBAL\Schema\Index;
+use App\Models\LearningMaterial;
 use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
@@ -70,9 +71,16 @@ class FrontController extends Controller
 
     public function courseDetails(Course $course)
     {
-        $course->load(['lecturer', 'exams']);
+        $course->load(['lecturer', 'exams', 'students', 'learning']);
 
         return view('front.course-details', compact('course'));
+    }
+
+    public function learningDetails($id)
+    {
+        $material = LearningMaterial::findOrFail($id);
+
+        return view('front.learning-details', compact('material'));
     }
 
     public function exam()
