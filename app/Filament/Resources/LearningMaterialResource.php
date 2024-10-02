@@ -4,52 +4,43 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Course;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\LearningMaterial;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CourseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Filament\Resources\LearningMaterialResource\Pages;
+use App\Filament\Resources\LearningMaterialResource\RelationManagers;
 
-class CourseResource extends Resource
+class LearningMaterialResource extends Resource
 {
-    protected static ?string $model = Course::class;
+    protected static ?string $model = LearningMaterial::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?int $navigationSort = 2;
-
-    protected static ?string $navigationGroup = 'Learning Management';
-
-    public function __construct()
-    {
-        // Menambahkan middleware pada resource ini
-        $this->middleware('role:admin');
-    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('title')
                     ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('video_path'),
+                Forms\Components\FileUpload::make('modul_path')
+                    ->label('Modul Path')
                     ->required(),
-                // Forms\Components\Select::make('teacher_id')
-                //     ->relationship('lecturer', 'name', function (Builder $query) {
-                //         return $query->whereHas('roles', function (Builder $query) {
-                //             $query->where('name', 'teacher');
-                //         });
-                //     })
-                //     ->required(),
-
-                Forms\Components\FileUpload::make('cover')
-                    ->image()
-                    ->required(),
+                Forms\Components\Select::make('course_id')
+                    ->label('Course')
+                    ->required()
+                    ->relationship('course', 'name', function (Builder $query) {
+                        return $query->whereHas('lecturer', function (Builder $query) {
+                            $query->where('teacher_id', Auth::user()->id);
+                        });
+                    }),
             ]);
     }
 
@@ -57,18 +48,15 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('video_path')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('modul_path')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('course.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('lecturer.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\ImageColumn::make('cover')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -95,15 +83,15 @@ class CourseResource extends Resource
     {
         // Hanya teacher
         if (Auth::user()->hasRole('teacher')) {
-            return Course::query()->whereHas('lecturer', function ($query) {
-                $query->where('id', Auth::user()->id);
+
+            return LearningMaterial::query()->whereHas('course', function ($query) {
+                $query->where('teacher_id', Auth::user()->id);
             });
         }
 
         // Jika bukan teacher, kembalikan query default (misalnya, semua data)
-        return Course::query();
+        return LearningMaterial::query();
     }
-
 
     public static function getRelations(): array
     {
@@ -115,9 +103,9 @@ class CourseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCourses::route('/'),
-            'create' => Pages\CreateCourse::route('/create'),
-            'edit' => Pages\EditCourse::route('/{record}/edit'),
+            'index' => Pages\ListLearningMaterials::route('/'),
+            'create' => Pages\CreateLearningMaterial::route('/create'),
+            'edit' => Pages\EditLearningMaterial::route('/{record}/edit'),
         ];
     }
 }
