@@ -73,7 +73,21 @@ class ExamAnswerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+
+                Tables\Filters\SelectFilter::make('exam_question_id')
+                    ->relationship('exam_question', 'question', function (Builder $query) {
+                        if (Auth::check() && Auth::user()->hasRole('teacher')) {
+
+                            return $query->whereHas('exam', function (Builder $query) {
+                                $query->whereHas('course', function (Builder $query) {
+
+                                    $query->where('teacher_id', Auth::user()->id);
+                                });
+                            });
+                        }
+                    })
+                    ->label('Filter by Category'),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
