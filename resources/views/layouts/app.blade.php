@@ -51,7 +51,7 @@
       @endguest
 
       @auth
-      <a class="btn-getstarted" href="/dashboard">Get Started</a>
+      <a class="btn-getstarted" href="/">Get Started</a>
       @endauth
 
     </div>

@@ -103,6 +103,18 @@ class LearningMaterialResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['teacher']);
+    }
+
+    
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->hasAnyRole(['teacher']);
+    }
+
     public static function getPages(): array
     {
         return [
