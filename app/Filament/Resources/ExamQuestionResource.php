@@ -23,7 +23,7 @@ class ExamQuestionResource extends Resource
     protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationGroup = 'Learning Management';
-    
+
     public function __construct()
     {
         // Menambahkan middleware pada resource ini
@@ -98,6 +98,17 @@ class ExamQuestionResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "operator" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['teacher']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->hasAnyRole(['teacher']);
     }
 
     public static function getPages(): array

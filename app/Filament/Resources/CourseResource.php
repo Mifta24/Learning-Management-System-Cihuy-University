@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CourseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -39,16 +40,11 @@ class CourseResource extends Resource
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
-                // Forms\Components\Select::make('teacher_id')
-                //     ->relationship('lecturer', 'name', function (Builder $query) {
-                //         return $query->whereHas('roles', function (Builder $query) {
-                //             $query->where('name', 'teacher');
-                //         });
-                //     })
-                //     ->required(),
 
                 Forms\Components\FileUpload::make('cover')
                     ->image()
+                    ->disk('public') // pastikan disk sudah benar
+                    ->directory('course-covers') // opsional, direktori penyimpanan
                     ->required(),
             ]);
     }
@@ -69,6 +65,8 @@ class CourseResource extends Resource
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('cover')
                     ->disk('public')
+                    ->label('Cover Image')
+                    ->square()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -80,7 +78,9 @@ class CourseResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->relationship('category', 'name')
+                    ->label('Filter by Category'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -111,6 +111,18 @@ class CourseResource extends Resource
         return [
             //
         ];
+    }
+
+
+    public static function canCreate(): bool
+    {
+        // Menggunakan Spatie untuk memastikan hanya role "teacher" yang bisa membuat kategori
+        return Auth::user()->hasAnyRole(['teacher']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->hasAnyRole(['teacher']);
     }
 
     public static function getPages(): array
