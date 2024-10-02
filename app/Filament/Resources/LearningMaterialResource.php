@@ -19,6 +19,8 @@ class LearningMaterialResource extends Resource
     protected static ?string $model = LearningMaterial::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Learning Management';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -32,6 +34,7 @@ class LearningMaterialResource extends Resource
                 Forms\Components\TextInput::make('video_path'),
                 Forms\Components\FileUpload::make('modul_path')
                     ->label('Modul Path')
+                    ->acceptedFileTypes(['pdf', 'doc', 'docx'])
                     ->required(),
                 Forms\Components\Select::make('course_id')
                     ->label('Course')

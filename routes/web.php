@@ -13,8 +13,6 @@ Route::get('/', [FrontController::class, 'index'])->name('dashboard');
 Route::get('/about', [FrontController::class, 'about'])->name('about');
 Route::get('/lecturers', [FrontController::class, 'lecturers'])->name('lecturers');
 Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
-Route::get('/courses', [FrontController::class, 'courses'])->name('courses');
-Route::get('/courses-details/{course:slug}', [FrontController::class, 'courseDetails'])->name('courses.show');
 
 
 // Route::get('/dashboard', function () {
@@ -26,6 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/courses', [FrontController::class, 'courses'])->name('courses');
+    Route::get('/courses-details/{course:slug}', [FrontController::class, 'courseDetails'])->name('courses.show');
+    Route::get('/learning-details/{id}', [FrontController::class, 'learningDetails'])->name('learning.detail');
 
     Route::get('/exam/{exam}/start', [ExamController::class, 'show'])->name('exam.start');
     Route::post('/exam/{exam}/submit', [ExamController::class, 'submit'])->name('exam.submit');
