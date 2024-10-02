@@ -55,5 +55,10 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_students');
     }
 
+    public function learning()
+    {
+        return $this->hasMany(LearningMaterial::class);
+    }
+
 
 }
